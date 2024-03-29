@@ -1,0 +1,54 @@
+.img-logo{
+    width: 100px;
+    height: 100px;
+    margin-left: 30px;
+    border-radius: 10px;
+}
+
+.header{
+    width: 99%;
+    background: #312828;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-items{
+    color: azure;
+    
+}
+
+.nav-items>ul{
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-items >ul > li{
+    padding: 15px;
+    font-size: 25px;
+}
+
+.res-card{
+    width: 250px;
+    padding: 5px;
+    margin: 10px 18px;
+    border: 2px solid black;
+    background: #e6e5e5;
+    
+}
+
+.res-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.res-img{
+    width: 100%;
+    border-radius: 10px;
+    
+}
+
+.top{
+    margin: 10px;
+    padding: 10px;
+}
