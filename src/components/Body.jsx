@@ -1,42 +1,72 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
+import { Link } from "react-router-dom";
+import { FETCH_API } from "../utils/constant";
 
 const Body = () => {
-  const [data, setData] = useState([]);
-  const [filterRes, setFilterRes] = useState([]);
+  const [restaurant, setRestaurant] = useState([]);
+  const [filterRestaurant, setFilterRestaurant] = useState([]);
+  const [isReset, setIsReset] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.65420&lng=77.23730&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
+    const data = await fetch(FETCH_API);
+    
     const json = await data.json();
-    setData(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilterRes(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    const restaurantData =
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants;
+    setRestaurant(restaurantData);
+    setFilterRestaurant(restaurantData);
   };
-  return (
-    <div className="res-container">
+
+  const handleTopRated = () => {
+    const filterRes = restaurant.filter((res) => res?.info?.avgRating > 4.3);
+    setFilterRestaurant(filterRes);
+    setIsReset(true);
+  };
+
+  const handleReset = () => {
+    setFilterRestaurant(restaurant);
+    setIsReset(false);
+  };
+
+  const handleSearch = () => {
+    const searchRes = restaurant.filter((res) =>
+      res.info.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilterRestaurant(searchRes);
+    setSearch(" ");
+  };
+
+  return restaurant.length === 0 ? (
+    <h2>Loading...</h2>
+  ) : (
+    <>
       <div className="top">
-        <button
-          onClick={() => {
-            const fil = data.filter((res) => res?.info?.avgRating > 4.2);
-            setData(fil);
-          }}
-        >
-          Top Rated Restaurants
-        </button>
+        <button onClick={handleTopRated}>Top Rated Restaurant</button>
+        {isReset && <button onClick={handleReset}>Reset</button>}
       </div>
-      {data?.map((res) => (
-        <RestaurantCard resData={res} key={res.info.id} />
-      ))}
-    </div>
+      <div>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+      <div>
+        {filterRestaurant?.map((res) => (
+          <Link key={res.info.id} to={"/restaurant/" + res.info.id}>
+            <RestaurantCard resData={res} />
+          </Link>
+        ))}
+      </div>
+    </>
   );
 };
 

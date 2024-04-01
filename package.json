@@ -5,13 +5,14 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "start" : "parcel index.html"
+    "start": "parcel index.html --port 2500"
   },
   "author": "Arjun",
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "parcel": "^2.12.0",
