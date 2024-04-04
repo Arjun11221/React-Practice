@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import { Link } from "react-router-dom";
 import { FETCH_API } from "../utils/constant";
+import useStatus from "../utils/useStatus";
 
 const Body = () => {
   const [restaurant, setRestaurant] = useState([]);
@@ -42,6 +43,14 @@ const Body = () => {
     setFilterRestaurant(searchRes);
     setSearch(" ");
   };
+
+  const status = useStatus();
+
+  if(!status){
+    return(
+      <h1>Look Like Offline. Plz check your Internet Connection.</h1>
+    )
+  }
 
   return restaurant.length === 0 ? (
     <h2>Loading...</h2>
